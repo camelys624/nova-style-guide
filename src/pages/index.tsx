@@ -1,70 +1,42 @@
 import * as React from 'react'
-import {Layout, Menu} from 'antd'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons'
-
-import 'antd/dist/antd.css'
-
-const {Header, Sider, Content} = Layout;
+import Layout from "../components/Layout"
+import {graphql} from "gatsby";
+import hljs from "highlight.js"
+import {MDXRenderer} from "gatsby-plugin-mdx";
 
 class IndexPage extends React.Component {
-  state = {
-    collapsed: false
-  }
+    componentDidMount() {
+        document.querySelectorAll('pre code').forEach((block: any) => {
+            hljs.highlightBlock(block);
+        })
+    }
 
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    })
-  }
+    render () {
+    // @ts-ignore
+    const {data} = this.props
 
-  render () {
     return (
-      <Layout>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              nav 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              nav 2
-            </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
-              nav 3
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
-            {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: this.toggle,
-            })}
-          </Header>
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: 280,
-            }}
-          >
-            Content
-          </Content>
+        <Layout>
+          <MDXRenderer>{data.allMdx.nodes[0].body}</MDXRenderer>
         </Layout>
-      </Layout>
     )
   }
 }
 
-export default IndexPage
+export const query = graphql`
+    query {
+      allMdx(filter: {slug: {regex: "/guide-summary/"}}) {
+        nodes {
+          body
+          id
+          slug
+          frontmatter {
+                        date(formatString: "MMMM D, YYYY")
+            title
+          }
+        }
+      }
+    }
+`
 
-interface State {
-  collapsed: boolean
-}
+export default IndexPage

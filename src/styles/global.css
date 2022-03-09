@@ -1,0 +1,21 @@
+:root {
+    --default-color: '#212121';
+    --background-color: white;
+    --default-width-1: calc(100vw / 1920);
+    --default-width-20: calc(var(--default-width-1) * 20);
+    --box-shadow: rgb(0 0 0 / 6%) 0px calc(var(--default-width-1) * 6) calc(var(--default-width-1) * 24);
+    --border-radius: calc(var(--default-width-1) * 4);
+    --font-size: calc(var(--default-width-1) * 14);
+    --large-font-size: calc(var(--default-width-1) * 16);
+    font-size: var(--font-size);
+}
+
+body {
+    margin: 0;
+}
+
+.hljs {
+    font-family: "Fira Code";
+}
+
+@import "~highlight.js/styles/base16/dracula.css";
