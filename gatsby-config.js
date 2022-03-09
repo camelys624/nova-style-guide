@@ -1,7 +1,7 @@
 /** @type {import('gatsby').GatsbyConfig} */
 module.exports = {
   siteMetadata: {
-      title: `new`,
+    title: `Nova Style Guide`,
     siteUrl: `https://www.yourdomain.tld`
   },
   plugins: ["gatsby-plugin-theme-ui", "gatsby-plugin-image", "gatsby-plugin-react-helmet", "gatsby-plugin-sitemap", {
@@ -23,5 +23,12 @@ module.exports = {
       "path": "./src/pages/"
     },
     __key: "pages"
+  }, {
+    resolve: 'gatsby-source-filesystem',
+    options: {
+      "name": "blog",
+      "path": `${__dirname}/doc`
+    },
+    __key: "blog"
   }]
 };
