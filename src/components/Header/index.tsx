@@ -1,4 +1,5 @@
 import * as React from "react"
+import {Link} from 'gatsby'
 // @ts-ignore
 import * as headerStyle from './index.module.css'
 
@@ -9,7 +10,7 @@ const Header = () => {
                 <h2>Nova Style Guide</h2>
                 <nav>
                     <ul className={headerStyle.menu}>
-                        <li>Front End</li>
+                      <li><Link to='/front-end-page'>Front End</Link></li>
                         <li>Back End</li>
                         <li>UI/UX Design</li>
                         <li>

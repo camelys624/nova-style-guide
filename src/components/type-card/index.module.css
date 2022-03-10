@@ -1,0 +1,10 @@
+.type-card__title {
+  height: calc(var(--default-width-20) * 3);
+  line-height: calc(var(--default-width-20) * 3);
+  border-bottom: solid  var(--default-width-1) var(--border-color);
+}
+
+.type-card__content {
+  display: flex;
+  flex-wrap: wrap;
+}
