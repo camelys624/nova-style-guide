@@ -53,3 +53,10 @@ header {
     padding: 0 var(--default-width-20);
     cursor: pointer;
 }
+
+:is(.menu, .sub-menu) li a {
+    height: 100%;
+    text-decoration: none;
+    color: var(--default-color);
+    display: block;
+}

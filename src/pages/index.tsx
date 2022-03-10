@@ -1,14 +1,12 @@
 import * as React from 'react'
 import Layout from "../components/Layout"
-import {graphql} from "gatsby";
-import hljs from "highlight.js"
+import {graphql} from "gatsby"
+import {initHighlight} from "../utils"
 import {MDXRenderer} from "gatsby-plugin-mdx";
 
 class IndexPage extends React.Component {
     componentDidMount() {
-        document.querySelectorAll('pre code').forEach((block: any) => {
-            hljs.highlightBlock(block);
-        })
+        initHighlight()
     }
 
     render () {

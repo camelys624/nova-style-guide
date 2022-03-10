@@ -1,12 +1,18 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import TypeCard from "../type-card"
-import Layout from "../Layout";
+import {initHighlight} from "../../utils"
+import Layout from "../Layout"
 
-const TemplatePage = ({data}: any) => {
+const TemplatePage = ({data, children}: any) => {
+    useEffect(() => {
+        initHighlight()
+    })
+
     return <Layout>
-      {data.map((item: ContentType) => {
-        return <TypeCard title={item.title} list={item.list} />
+      {data.map((item: ContentType, index: number) => {
+        return <TypeCard title={item.title} list={item.list} key={index} />
       })}
+      {children}
     </Layout>
 }
 
@@ -20,4 +26,5 @@ export interface ContentType {
 export interface MdxContent {
   title: string,
   slug: string,
+  body?: string
 }
