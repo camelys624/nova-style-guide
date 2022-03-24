@@ -1,0 +1,47 @@
+---
+title: "A few small thoughts"
+type: "CSS"
+date: "2022-03-24"
+---
+
+不管是用 CSS 还是一些 CSS 的预处理器，它们都是支持变量的，我们完全可以和 UI 定义好一些基础的变量，这样即统一了项目样式，而且以后改起来也方便。
+
+一般可以用来作为变量存储的可以是以下几类：
+
+- 颜色
+- 长度单位
+- border
+- border-radius
+- box-shadow
+
+也可以将一些常用的数据定义起来，或者将一些难以理解的数值定义为自然语言。
+
+这些定义的变量应当尽量放在 `:root` 中。
+
+```css
+:root {
+  /* 定义颜色 */
+  --hydra-yellow: #edd319;
+  --hydra-red: #ed5d19;
+  
+  /* 定义长度，如果需要对缩放进行处理，可以使用vw，非常方便 */
+  --hydra-width-1: calc(100vw / 1920);
+
+  /* 定义border */
+  --hydra-default-border: var(--hydra-width-1) solid var(--hydra-yellow);
+}
+```
+
+这样如果需要修改某个颜色值，不用再去每个页面都搜索修改，在这里修改就可以。
+
+可以参考 [ant-design](https://ant.design/index-cn) 是怎么定义这些变量的。
+
+#### 使用 hsl
+
+使用 `hsl()` 或 `hsla()` 管理颜色。首先 `hsl()` 可以很轻松的实现下面的色卡效果。
+
+![色卡](https://i.postimg.cc/Dfbrfb7y/2022-03-24-215822.png)
+
+然后可以通过前面说的变量，轻松修改颜色，而且是系列颜色，更加方便。
+
+可以参考这位大哥 [Using HSL Colors In CSS](https://www.smashingmagazine.com/2021/07/hsl-colors-css/) 的文章。
