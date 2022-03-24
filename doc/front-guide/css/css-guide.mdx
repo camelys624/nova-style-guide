@@ -3,8 +3,255 @@ title: "CSS guide"
 type: "CSS"
 date: "2022-03-10"
 ---
-This is my first blog post! Isn't it *great*?
-Some of my **favorite** things are:
-* Petting dogs
-* Singing
-* Eating potato-based foods
+
+以下，都是抄的别人的，有异议就自己个儿改噶。在使用啥子 sass、less 这些 CSS 
+
+## 编码风格
+
+### 代码格式化
+
+一般 CSS 都有两种风格：
+
+```css
+/* 紧凑格式 (Compact) */
+.class { display: block; width: 100px; }
+
+/* 展开格式 (Expanded) */
+.class {
+  display: block;
+  width: 100px;
+}
+```
+小杨推荐用展开格式。
+
+### 代码大小写
+
+推荐全部使用小写字母，除非是某些属性值需要使用大小字母。
+
+```css
+/* 推荐 */
+.class {
+  display: block;
+}
+
+/* 不推荐 */
+.class {
+  DISPLAY: BLOCK;
+}
+```
+
+### 选择器
+
+- 尽量少用通配符`*`
+- 不使用 ID 选择器（why）
+- 不适用无具体语义定义的选择器
+
+```css
+/* 推荐 */
+.class {}
+.class li {}
+.class li p {}
+
+/* 不推荐 */
+* {}
+#class {}
+.class div {}
+```
+
+### 代码缩进
+
+反正我是用的两个空格，可以显示更多内容。反正还是听大家的。
+
+### 空格
+
+`选择器` 与 `{` 之间必须包含空格。
+
+```css
+.class {}
+```
+
+`属性名` 与之后的 `:` 之间不允许包含空格，`:` 与 `属性值` 之间必须包含空格。
+
+```css
+.class {
+  display: block;
+}
+```
+
+`列表型属性值` 书写在单行时，`,` 后必须跟空格。
+
+```css
+.class {
+  font-family: Arial, sans-serif;
+}
+```
+
+### 行长度
+
+每行不得超过 120 个字符，除非单行不可分割。
+
+> 常见不可分割的场景为 URL 超长
+
+对与超长的样式，在样式值的`空格`处或`,`后换行，建议按逻辑分组。
+
+```css
+/* 不同属性值按逻辑分组 */
+background:
+  transpanrent url(aVeryVeryVeryVeryLongUrlIsPlaceHere)
+  no-reapeat 0 0;
+
+/* 可重复多次的属性，每次重复一行 */
+background-image:
+  url(aVeryVeryVeryVeryLongUrlIsPlaceHere)
+  url(aVeryVeryVeryVeryLongUrlIsPlaceHere);
+
+/* 类似函数的属性值可以根据函数调用的缩进进行换行 */
+background-image: linear-gradient(
+  to right,
+  white,
+  white 10%,
+  black
+);
+```
+
+### 选择器
+
+当一个 rule 含多个 selector 时，每个选择器声明必须独占一行
+
+```css
+/* 推荐 */
+.post,
+.page,
+.comment {
+  line-height: 1.5;
+}
+
+/* 不推荐 */
+.post, .page, .comment {
+  line-height: 1.5;
+}
+```
+
+`>`、`+`、`~`选择器的两边各保留一个空格。
+
+```css
+main > nav {
+  padding: 10px;
+}
+
+label + input {
+  margin-left: 5px;
+}
+
+input:checked ~ button {
+  background-color: #69c;
+}
+```
+
+属性选择器中的值必须使用双引号包围
+
+```css
+article[character="juliet"] {
+  voice-famaily: "Vivien Leigh", victoriam, female;
+}
+```
+
+属性定义后必须以分号结尾。
+
+```css
+/* 推荐 */
+.class {
+  display: block;
+}
+
+/* 不推荐 */
+.class {
+  display: block
+}
+```
+
+### 选择器
+
+选择器的嵌套层级应不大于 3 级，位置靠后的限定条件应尽可能精确。
+
+```css
+/* 推荐 */
+.username iput {}
+
+/* 不推荐 */
+header .login .user-info .username input {}}
+```
+
+### !important
+
+尽量不使用 `!important` 声明。
+
+
+### 数值
+
+当数值为 0 - 1 之间的小数时，省略整数部分的 `0`。
+
+```css
+.class {
+  opacity: .8;
+}
+```
+
+长度为 0 时需要省去单位。
+
+```css
+/* 推荐 */
+body {
+  padding: 0 5px;
+}
+
+/* 不推荐 */
+body {
+  padding: 0px 5px;
+}
+```
+
+### 颜色
+
+推荐使用十六进制`#rrggbb`表示颜色。如果是带有 alpha 的颜色信息可以使用 `rgba()`。不过现在可以使用`#rrggbbaa`这样带透明度的十六进制颜色。
+
+使用 `rgba()` 时每个逗号后必须保留一个空格。
+
+```css
+/* 推荐 */
+.success {
+  box-shadow: 0 0 2px rgba(0, 128, 0, .3);
+  border-color: #008000;
+}
+```
+
+**进阶**，可以使用 `hsl()` 来定义颜色，这样做的好处是可以通过改变 `l` 的值来调整明度，形成一套色卡。
+
+![hsl](https://res.cloudinary.com/indysigner/image/fetch/f_auto,q_80/w_2000/https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/64d4a97f-17a0-48c8-9688-cd26aa3ba555/13-hsl-colors-css.jpg)
+
+通过定义变量，可以实现快速切换主题功能。
+
+### 字号
+
+字体不得小于 `12px`。
+
+- windows 的字体渲染机制，小于 12px 的问题显示效果极差
+- chrome 最小字体为 12px
+
+### 字重
+
+不推荐使用 `font-weight: bold;`，而是使用 bold 字体。使用前者的时候我们的 hp 字体会有虚影，不清晰。
+
+```css
+/* 推荐 */
+h1 {
+  font-famaily: HP-Bold;
+}
+
+/* 不推荐 */
+h1 {
+  font-weight: bold;
+}
+```
+
+99%参考 fex-team [CSS 编码规范](https://github.com/fex-team/styleguide/blob/master/css.md)
