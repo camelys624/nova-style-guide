@@ -26,7 +26,7 @@ header {
     display: block;
     font-size: var(--large-font-size);
     font-weight: bold;
-    width: calc(var(--default-width-20) * 6);
+    /*width: calc(var(--default-width-20) * 6);*/
     padding: 0 var(--default-width-20);
     height: calc(var(--default-width-20) * 3.5);
     line-height: calc(var(--default-width-20) * 3.5);
@@ -54,7 +54,8 @@ header {
     cursor: pointer;
 }
 
-:is(.menu, .sub-menu) li a {
+:is(.menu, .sub-menu) li a,
+h2 > a {
     height: 100%;
     text-decoration: none;
     color: var(--default-color);

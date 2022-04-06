@@ -7,12 +7,13 @@ const Header = () => {
     return (
         <div className={headerStyle.headerBox}>
             <header>
-                <h2>Nova Style Guide</h2>
+                <h2><Link to='/'>Nova Style Guide</Link></h2>
                 <nav>
                     <ul className={headerStyle.menu}>
                       <li><Link to='/front-end-page'>Front End</Link></li>
                         <li>Back End</li>
                         <li>UI/UX Design</li>
+                        <li><Link to='/blog-page'>Blog</Link></li>
                         <li>
                             Projects
                             <ul className={headerStyle.subMenu}>
