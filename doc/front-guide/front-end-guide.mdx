@@ -1,0 +1,81 @@
+---
+title: "前端开发指南"
+date: "2021-07-23"
+---
+
+## 工作流程
+
+使用 git-fow 来管理工作，可以很好的配合目前的 ADO 看板。因为每一个新功能对应的就是一个新分支，git flow 只有完成了这个功能之后才能建立新的分支。
+
+git flow 的操作，可以参考[这篇文章](https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/git-flow) 或者跟着下面的步骤来。
+
+### 安装 git
+
+window 的 git 自带 git flow，直接就能用，Linux 需要执行 `sudo apt-get install git-flow`。
+
+### 初始化项目
+
+可以直接执行 `git flow init` 就可以将一个项目转为 flow 管理的项目，不管之前是否 `git init` 过。
+
+在执行上述命令之后，如果是新项目，会创建两个分支(master, develop)，其中 master 是发布时的分支，develop 是开发的分支，当我们开发新功能时，会从 develop 分支创建新分支，开发完成之后，新的代码会自动合并在 develop 分支上。
+
+如果是已经有多个 git 分支的项目，则需要指定一个发布分支和一个开发分支。
+
+### 开发新功能
+
+我们在 ADO 上面领了一个任务，这个时候就可以执行如下命令，创建一个新的开发分支。
+
+```bash
+# 开发之前执行
+git flow feature start hydra-user
+
+# 完成功能后执行
+git flow feature finish hydra-user
+```
+
+开发完成之后，新的代码自动会合并到 develop 上，并且会删除掉新功能分支。
+
+如果说我在开发的时候，block 住了怎么办，我的建议是，执行完成命令，在 commit 里面详细记录做了什么事情，已经未做的事，等解除 block 状态再重新建一个 feature。
+
+如果说，有个新功能下次就要上，但是有些 develop 的功能又不上，我觉得直接从 master 创建新的分支，不用 git flow ，然后在上面开发，可能有一些更好的 git 操作方法，后续研究一哈。
+
+### 修 bug
+
+修 bug 有两个命令：
+
+- `git flow bugfix`	修复 develop 阶段的 bug，从 develop 创建新分支
+- `git flow hotfix` 修复线上 bug，从 master 创建分支
+
+例：
+
+```bash
+# 开始修改 Bug 24856
+git flow bugfix start bug-24856
+
+# 解决 Bug 24856
+git flow bugfix finish bu-24856
+```
+
+### 发布
+
+在上线之前，我们可以执行下述命令，对代码做最后的修改。
+
+```bash
+git flow release start 1.1.5
+
+git flow release finish 1.1.5
+```
+
+## 代码规范
+
+可以参照 [standard](https://standardjs.com/rules-zhcn.html#javascript-standard-style) 的代码规范，东西实在是太多了，而且它自己就是一个工具，可以解决项目中的代码问题，我们其实只需要用它辅助就行，而且代码缩进这些问题，我们只需要定义好，然后使用 prettier 格式化就行，看起来大体一样。
+
+那么我们 code review 的时候 review 什么，我觉得 [airbnb](https://github.com/airbnb/javascript) 里面的就很好，主要是一些代码的实现，我们应当采取一些精简的，先进的方法来解决问题，相互学习。
+
+## 前端与UI协作
+
+UI 定义好系统的基础样式，前端通过变量的形式定义在 CSS 样式中。
+
+## 前后端协作
+
+定义 Api 文档，前端可以架设 json-server mock 数据。

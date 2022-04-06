@@ -1,0 +1,185 @@
+---
+title: "怎样编写 md 文档"
+type: "Doc"
+date: "2022-03-10"
+author: "Robbie"
+---
+
+为什么选择使用 markdown 编写文档。首先它允许使用易读易写的纯文本格式编写文档，然后转为有效的 XHTML 或 HTML 文档；其次，许多网站都支持 markdown 的在线解析，使用 markdown 编写文档几乎是所有开源项目的通识。
+
+## 基本语法
+
+### 标题
+
+通过 `#` 的个数来表示是第几级标题。
+
+```markdown
+# 一级标题
+<!-- 等同于 h1 -->
+
+## 二级标题
+<!-- 等同于 h2 -->
+
+<!-- 同理，后面的就是 h3, h4, h5, h6 -->
+### 三级标题
+
+### 四级标题
+
+...
+```
+
+### 段落
+
+段与段之间用一个空行隔开，而不是传统的换行
+
+```markdown
+段落一
+
+段落二，注意中间空行
+```
+
+### 换行
+
+在文本后面加两个空格然后直接换行，但是这样不直观，更好的办法是直接在需要换行的地方加上`<br>`标签
+
+```markdown
+一些文字  
+另一行
+
+一些文字<br>
+另一行
+```
+
+### 文本属性
+
+#### 斜体
+
+用一个`*`包裹文字，文字就会变成斜体：
+
+```markdown
+*一些文字*
+```
+
+**结果：** *一些文字*
+
+#### 粗体
+
+用两个`*`包裹文字即可：
+
+```markdown
+**一些文字**
+```
+
+**结果：** **一些文字**
+
+#### 斜粗体
+
+用三个`*`包裹文字。***一些文字***
+
+### 无序列表
+
+用这些 `-`、`*`、`+` 符号加上一个空格就可以创建一个无序列表，如果再加上缩进，就可以创建子列表：
+
+```markdown
+- list1
+- list2
+	- subList
+```
+
+**结果：**
+
+- list1
+- list2
+  - subList
+
+### 有序列表
+
+使用数字加空格，就可以创建一个有序列表，其他同无序列表：
+
+```markdown
+1. list1
+2. list2
+	1. list2.1
+```
+
+### 链接
+
+用下面的代码就可以插入一个链接：
+
+```markdown
+[链接](http://link.com)
+```
+
+### 图片
+
+与插入链接相似，但是要在前面加一个`!`：
+
+```markdown
+![图片](../images/code-review.jpg "photo")
+
+<!-- 链接图片 -->
+[![图片](../../public/favicon-32x32.png "photo")](http://link.com)
+```
+
+### 引用
+
+使用`>`来表示该文本是引用文本。
+
+```markdown
+> 人生苦短，我用 python
+```
+
+**结果：** 
+
+> 人生苦短，我用 python
+
+
+### 代码块
+
+可以使用 \` 符号来包裹一行代码实现一个代码块，如：\`sudo apt install python\` ，结果将会是这样 `sudo apt install python`。多行代码块可以使用三个 \` 包裹，并在第一个后面加上代码语言，可以自动实现该代码的高亮效果，如下：
+
+```text
+# ```js
+// 实际使用的时候把前面的 # 删除掉
+let str = 'Hello Markdown'
+console.log(str)
+# ```
+```
+
+结果如下：
+
+```js
+let str = 'Hello Markdown'
+console.log(str)
+```
+
+## 进阶
+
+markdown 可以很方便的将内容转变为 HTML，但是它是使用的默认样式，有没有办法实现自己的样式呢？
+
+答案是肯定的，markdown 支持 HTML5 标签，所以我们可以一些 HTML5 标签实现一些特殊的效果，更强的是，我们可以通过写行内样式来实现一些特殊的布局。
+
+比如：我们可以使用 `<details>` 标签来实现展开折叠的效果。
+
+<details>
+	<summary>展开显示更多</summary>
+
+	```js
+	  var obj = {
+      foo: 'foo'
+      ,bar: 'bar'   // ✗ avoid
+    }
+
+    var obj = {
+      foo: 'foo',
+      bar: 'bar'   // ✓ ok
+    }
+	```
+
+</details>
+
+使用行内样式来实现一个居中布局：
+
+<div style="height:300px;width:100%;display:flex;align-items:center;justify-content:center;background-color:lightgreen;">
+	<div style="height:200px;width:200px;background-color:pink;border-radius:50%;text-align:center;line-height:200px;">Hello</div>
+</div>
