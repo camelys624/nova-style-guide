@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { graphql } from 'gatsby'
-import { MDXRenderer } from "gatsby-plugin-mdx"
-import TemplatePage, { ContentType, MdxContent } from "../components/template-page"
+import React, {Component} from 'react'
+import {graphql} from 'gatsby'
+import {MDXRenderer} from "gatsby-plugin-mdx"
+import TemplatePage, {ContentType, MdxContent} from "../components/template-page"
 
 class BlogPage extends Component<Element, any> {
     render() {
@@ -14,7 +14,7 @@ class BlogPage extends Component<Element, any> {
         }
 
         // @ts-ignore
-        const { allMdx } = this.props.data
+        const {allMdx} = this.props.data
         allMdx.nodes.forEach((item: any) => {
             let type: string = item.frontmatter.type
             let formatItem: MdxContent = {
@@ -33,7 +33,7 @@ class BlogPage extends Component<Element, any> {
             }
         })
 
-        return <TemplatePage data={result} />
+        return <TemplatePage data={result}/>
     }
 }
 
