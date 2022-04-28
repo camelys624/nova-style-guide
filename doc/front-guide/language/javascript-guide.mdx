@@ -48,16 +48,16 @@ date: "2022-03-10"
   if(condition) { ... }    // ✗ avoid
   ```
 
-* **函数声明时括号与函数名间加空格**。
+* **函数声明时括号与函数名间不要加空格**。
 
   eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren)
 
   ```js
-  function name (arg) { ... }   // ✓ ok
-  function name(arg) { ... }    // ✗ avoid
+  function name (arg) { ... }   // avoid
+  function name(arg) { ... }    // ok
 
-  run(function () { ... })      // ✓ ok
-  run(function() { ... })       // ✗ avoid
+  run(function () { ... })      // avoid
+  run(function() { ... })       // ok
   ```
 
 * **始终使用** `===` 替代 `==`。
@@ -173,7 +173,7 @@ date: "2022-03-10"
   })
   ```
 
-* **使用浏览器全局变量时加上** `window.` 前缀。
+* **使用浏览器全局变量时加上** `window.` 前缀。[推荐]
 
   `document`、`console` 和 `navigator` 除外。
 
@@ -274,12 +274,19 @@ date: "2022-03-10"
     var myVar = 'hello'            // ✓ ok
   ```
 
+* **常量使用 const 定义，并且变量名全大写，多个单词用下划线 _ 连接**
+
+  ```js
+    const MAX_NUM = 100
+  ```
+
 * **不允许有多余的行末逗号**。
 
   eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle)
 
   ```js
     var obj = {
+      robbie: 'yang',
       message: 'hello',   // ✗ avoid
     }
   ```
@@ -487,6 +494,14 @@ date: "2022-03-10"
   ```js
   var name
   delete name     // ✗ avoid
+
+  let obj = {
+    a: '1',
+    b: '2'
+  }
+
+  delete obj.a  // 不推荐
+  obj.a = undefined // 推荐
   ```
 
 * **不要定义冗余的函数参数**。

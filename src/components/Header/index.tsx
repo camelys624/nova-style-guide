@@ -17,7 +17,7 @@ const Header = () => {
                         <li>
                             Projects
                             <ul className={headerStyle.subMenu}>
-                                <li>Nova</li>
+                                <li><Link to='/nova-project-page'>Nova</Link></li>
                                 <li>Hydra</li>
                                 <li>Asgard</li>
                             </ul>

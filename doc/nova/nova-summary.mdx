@@ -1,0 +1,309 @@
+---
+title: "nova summary"
+date: "2022-04-25"
+type: "nova"
+---
+
+## 安装依赖
+
+使用 `yarn install` 而不是 `npm install` ，否则可能会出现问题
+
+## 关于项目的一些可能的问题
+
+### vetur
+
+如果 vetur 报找不到 xxx.json 那就是打开的文件夹不对，因为克隆下来的文件夹，项目文件夹外面其实还包裹了一个文件夹，要选择正确的项目文件夹。
+
+### eslint
+
+实际上，就算是项目中有 eslint 的相关配置，但是 eslint 可能还是不会起作用，因为对应的包并不会被默认安装，需要自行安装相应的包。并且在编辑器中打开正确的项目文件。执行下述命令安装需要的包。
+
+```shell
+npm install --save-dev eslint eslint-plugin-vue @babel/eslint-parser eslint-config-airbnb-base
+```
+
+但是不推荐使用 eslint，页面太多了，需要改的地方非常多，要完全改过来十分耗费时间，空闲的时候可以整改。
+
+## 根目录的一些相关文件
+
+- versionBuild.json 版本配置，我也不知道为什么放在这里
+- .eslintrc.js  eslint配置
+- .editorconfig   编辑器配置，我不知道怎么用这个，感觉可有可无
+- .babelrc  babel 转码配置
+
+babel转码这个比较复杂，之前没有相关经验，但是找到两篇文章可以参考：
+
+- [babel配置文件.babelrc详解](https://www.cnblogs.com/ranyonsue/p/14685993.html)
+- [Babel7 转码（五）- corejs3 的更新](https://segmentfault.com/a/1190000020237817)
+- [[译]在 Babel 中支持 TC39 标准的装饰器](https://juejin.cn/post/6844903758283948045)
+
+思否那个文章是个系列，后面有时间可以全部过一下。
+
+## webpack 相关配置
+
+在 `/build` 文件夹中找到相关配置
+
+## node 服务相关
+
+在 `/novaWebBackEnd` 文件夹找到相关配置。
+
+- dev-server.js 主要逻辑都在这个文件，其实就是使用 express 做了一个静态文件服务器
+- renderMailTemplate.js   服务端渲染邮件模板
+- apiRouter.js  前端服务的路由，邮件和文件存储
+
+### 文件服务
+
+nova 的 node 服务还兼顾文件上传服务，上传的文件保存在 `/fileUpload` 文件夹。如果在本地发现图片未加载成功的问题，不要慌，只是没有同步 `/fileUpload` 文件夹，可以忽略，但也不能完全忽略，后面说到项目的静态文件。
+
+## 基本配置
+
+在 `/config` 文件夹中找到基础配置文件，其中最重要的是 `index.js` 文件，它配置了项目相关信息，需要知道的一点是项目默认是进入的 HP 页面，如果要进入 odm 相关页面，需要将 `index.js` 文件中 `site_env` 字段值改为 1。
+
+## 项目代码相关
+
+前端项目代码都在 `/src` 文件夹中，是一个标准的 VUE 项目结构。
+
+### 公用信息
+
+#### 公用方法
+
+公用方法基本上都放在 `./utils` 文件夹中，如果需要一些公用的方法，推荐先看 `loadsh` 中是否存在，如果没有再来这里查找，如果还是没有，可以自己在这边定义。
+
+- auth.js   cookie 相关
+- clickoutside.js   nova 的一个指令，一般用来做小弹窗的点击非弹窗区域关闭
+- dom.js    clickoutside.js 的依赖，获取元素的视图大小
+- index.js  sorry, I don't know what is it
+- menuHelper.js 创建菜单时调用
+- renderChart.js  dashboard 相关工具
+
+以上，没写进去的文件都没啥子可以多谈的，可以忽略。
+
+#### 公用组件
+
+公用的组件定义在 `./pakages` 文件夹，需要使用的时候来这边查找一下，具体使用方法最好是参考之前的用法，没有文档，或许将来有吧。
+
+注意，`./components` 文件夹里面的组件**不是公用组件**，是分页面自己的组件，当时的错误做法，新的页面不推荐再在这里定义组件。
+
+#### CSS 相关
+
+在 `./style` 文件夹中存放的是系统通用的 css 样式。
+
+- base.css  主要，系统的 css 变量和初始化样式在这里定义；我也推荐在这里面添加新的 css 样式
+- newBase.less  需多组件都用到了，具体是哪些，等修改到的时候再具体看
+- newBases.less pocn 相关组件使用
+- sharedNova.less 貌似是服务器渲染时用的，影响不大
+- /fonts 系统使用 HP 的字体，需要注意的是，对于粗体字，不能使用 CSS 的 `font-weight` 属性，应该使用 `HPSimplified-Bold` 字体
+
+需要注意的是，nova 主要还是使用的 css 的预处理语言 less，但是 base.css 使用的是原生 css 语言，注意区分。
+
+#### 静态资源
+
+**图片**
+
+图片资源主要放在 `./public/common` 、 `./public/images` 和 `/static/imgs` 这三个文件夹中，注意 `/static/imgs` 这个文件夹在根目录，而且它里面的图片主要用在配置项，大概都配置在 `./laguages/outsideLink.json` 里面。
+
+**字体图标**
+
+nova 使用的是阿里 iconfont，存放在 `./public/svg` 文件夹下，需要更新的话，下载图标文件，然后解压复制里面的所有文件，覆盖这个文件夹里面的文件就 ok 了。
+
+**其他**
+
+前面 `/fileUpload` 文件夹里面放置的是上传的文件，所以下载也是走的这边。
+
+然后 `/static` 文件夹里面放的就是项目相关的文件，但不是代码所需要的。
+
+- imgs  前面已经说过，不在赘述
+- music BGM，award 页面有用
+- userGuide 里面有 userGuide 和证书文件
+
+### API
+
+与后端调用接口的代码在 `./api` 文件夹下。
+
+- novaApi.js  重要，相关 API 都是定义在这里的
+- apiConfig.js  后端 IP 配置，如果是 ODM，需要修改 ODM 的 IP，或者其他需要修改 IP 的时候，到这边修改
+- create-api.js axios 配置
+- /module   novaApi.js 里面东西太多了，按照模块拆分出来的代码
+
+### 配置项
+
+配置这里有些杂乱，不过主要分两类，一个是 `./enum` 下面的偏页面的配置。
+
+- codeEnum.js   与后端定义的一些字段的意思，需要根据对应页面匹配才知道相应的意义
+- constant.js   路由菜单的基本配置
+
+另一个是 `./languages` 下的偏服务器端的配置，本来是多语言配置，不知道怎么搞成这个样子，不懂。
+
+- baseConfig.json   就那个邮件可能用到了
+- common.json   有些邮件模板在这边定义了
+- blockType.json  blockType
+- outsideLink.json  dailyNova 页面，搜索框下面的链接
+- siteIPAdress.json 给服务器配置用的
+
+### 路由
+
+路由的相关配置主要在 `./router` 文件夹中，但是还是会有一些其他的文件需要配合使用，下面会根据依赖关系进行解释：
+
+1. `./enum/constant.js` 菜单基础配置
+2. `./router/menu.js`   进一步补充细节，在这里会进行页面的挂载和子父菜单的连结
+3. `./utils/menuHelper.js` flat 菜单，可以方便添加到子路由中
+4. `./router/router.js` 创建 vue router 实例
+5. `./main.js`          路由拦截
+
+如果不是特别的菜单，只需要在第一步和第二步添加就 ok 了，不然的话，建议看看这几个文件的代码，就能够很快速的添加新页面。
+
+在 `./main.js` 中，有一段添加动态路由的代码，相关逻辑也可以在 `menuHelper.js` 中找到，vuex 中也有使用，需要注意。
+
+### Vuex
+
+项目使用 vuex 管理一些全局数据，实际上，直接去 `./store/getter.js` 文件就知道管理了哪些数据：
+
+- getIsLogin  判断是否已经登录，在路由拦截的时候使用
+- getMenuList 管理菜单信息，在 layout 页面使用
+- getCurrentUser  user 信息
+- getFavorites 最右边那个 favorite 按钮里面的内容
+- getTestingSite  testing site 信息
+- getDynamicRouting 动态路由菜单信息
+- getHPUserList HP 用户信息，odm 端使用
+- getOdmUserList  ODM 用户信息，HP 端使用
+- getOdmHPUserList  所有用户信息，但是小心 userId 重复
+- getCurrentUserList  对应端的用户信息，HP 端就是 Hp 用户信息，ODM 端就是 ODM 用户信息
+
+可以在相应的模块中找到对应的字段，mutation 的东西可能有点麻烦，要先去 `mutation-types.js` 中定义相应的变量，然后再调用，尊重前人思想，后续空了重构。
+
+### 页面相关
+
+就不详细说了，只介绍比较重要的几个页面。
+
+#### Layout
+
+页面框架，其中菜单的组装和 vuex 数据的初始化会在挂载时执行。
+
+#### Plan 相关
+
+Plan 复杂的地方是 plan 的编辑，涉及到一个版本升级的东西，这个东西是前端来控制的，主要是一个比对，核心代码如下：
+
+```js
+// ./plugins/planTree.js
+
+compareData(oldData,newData,detailInfo){
+    let changeData={dataUpdate:false,changArr:[],modiSecondaryInfo:0}
+    for (const key in newData) {
+        if(key!="orderUpdate"&&key!="ishp"&&key!="modiSecondaryInfo"&&key!="dataUpdate"&&key!="oldPlanViewId"&&key!="oldVersion"&&key!="type"&&key!="status"){//除去两个字段
+            if(key!= "children"){//不是数组
+                if(typeof newData[key]=="object"){
+                    let tempJson=JSON.parse(JSON.stringify(newData[key]))
+                    if(key=="steplist"){
+                        if(tempJson){
+                            tempJson.forEach(s=>{
+                                delete s.stepAtccaseListSelect
+                            })
+                        }
+                        
+                    }
+                    if(newData[key]!=oldData[key]&&JSON.stringify(tempJson)!=JSON.stringify(oldData[key])){
+                        if(key=="hashtags"){
+                            changeData.modiSecondaryInfo=1
+                        }else{
+                            let tempobj={}
+                            tempobj[key]=oldData[key]
+                            tempobj["change"+key]=newData[key]
+                            changeData.changArr.push(tempobj)
+                            changeData.dataUpdate=true
+                        }
+                        
+                    }
+                }else{
+                    if(newData[key]!=oldData[key]){
+                        if(key=="detail"||key=="keyword"){
+                            changeData.modiSecondaryInfo=1
+                        }else{
+                            let tempobj={}
+                            tempobj[key]=oldData[key]
+                            tempobj["change"+key]=newData[key]
+                            changeData.changArr.push(tempobj)
+                            changeData.dataUpdate=true
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    if(changeData.modiSecondaryInfo==1&&!changeData.dataUpdate){
+        changeData.dataUpdate=true
+    }else{
+        changeData.modiSecondaryInfo=0
+    }
+    return changeData
+}
+```
+
+以及 `line 505` 的 `comparedPlan` 方法，代码行数太多，就不贴了。升版的核心字段为 `dataUpdate` 然后通过一些逻辑判断来验证是哪种升级方式。
+
+**HashTag 筛选**
+
+选中对应的 item，在点击 plan 列的 HashTag 按钮，可以批量添加 HashTag，Todo: HashTag 的作用。
+
+**childPlan 相关**
+
+childPlan 就是复制一份所选 Plan，然后在复制的 Plan 中进行删除操作，也就是修剪掉一些 section 或者 case。
+
+#### Task 相关
+
+task 里面比较棘手的就是 taskConfig 这一块的内容，主要是逻辑有点多。有一个性能优化的地方，就是数据的截取：
+
+```js
+handleScrollCloumnPlan(vertical, horizontal, nativeEvent) {
+    if(this.allPlanTag!='-1'){
+        if(vertical.scrollTop==0){
+            this.pageNumPlan=0
+        }else{
+            this.pageNumPlan= Math.round(vertical.scrollTop/40)
+        }
+        this.getPanVnodeData()
+    }
+},
+getPanVnodeData(){
+    let tempIndex= 0
+    this.currentTreeVnode=[]
+    let temphideIndex=0
+    for (let index = 0; index < this.planTreeVnode.length; index++) {
+        if(tempIndex<this.pageSizePlan&&(this.planTreeVnode[index].floorType==2||this.showChildren.includes(this.planTreeVnode[index].positionPlan))){
+            if(temphideIndex>=this.pageNumPlan){
+                this.currentTreeVnode.push(this.planTreeVnode[index])
+                tempIndex+=1
+            }else{
+                temphideIndex+=1
+            }
+            
+        }
+        if(tempIndex>=this.pageSizePlan){
+            break;
+        }
+    }
+}
+```
+
+**一些细节的处理**
+
+- 弹窗，尽量使用原生的 dom 操作来显示或者关闭弹窗，而不是用 vue 的指令
+- 下拉菜单，应该永远只有一个下拉菜单
+
+#### Orbit 相关
+
+**organization**
+
+这个就是小杨我自己做的，主要是一个自己实现的 tree list 组件，然后就没了。
+
+**Web Workers 多线程**
+
+在 master 和 genToGen 那些数据量比较大的页面，使用到了 Web Workers 开启多线程，哎，就是一个通信，也不难。
+
+需要注意的是，用到的页面叫 `master.vue` 不是 `IurMaster.vue`。核心思想还是一个，先拍平，再做相应的控制。拍平代码在第 1553 行。
+
+其他几个页面应该是差球不多的。
+
+**Pocn**
+
+Melinda 在看，看他研究得啷个样吧。

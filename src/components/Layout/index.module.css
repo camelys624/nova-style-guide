@@ -1,4 +1,4 @@
 .md-content {
-    max-width: 80rem;
+    max-width: 60rem;
     margin: calc(var(--default-width-20) * 4.5) auto 0;
 }

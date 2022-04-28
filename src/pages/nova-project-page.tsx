@@ -3,7 +3,7 @@ import {graphql} from 'gatsby'
 import {MDXRenderer} from "gatsby-plugin-mdx"
 import TemplatePage, {ContentType, MdxContent} from "../components/template-page"
 
-class BlogPage extends Component<Element, any> {
+class NovaProjectPage extends Component<Element, any> {
     render() {
         let result: ContentType[] = []
         let typeMap: any = {}
@@ -34,7 +34,7 @@ class BlogPage extends Component<Element, any> {
 
 export const query = graphql`
     query {
-        allMdx(filter: {slug: {regex: "/blog/"}}) {
+        allMdx(filter: {slug: {regex: "/nova/"}}) {
             nodes {
                 frontmatter {
                     title
@@ -49,4 +49,4 @@ export const query = graphql`
     }
 `
 
-export default BlogPage
+export default NovaProjectPage

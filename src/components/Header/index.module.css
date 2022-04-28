@@ -9,7 +9,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 80rem;
+    max-width: 60rem;
     padding: 0 1.5rem;
     margin: 0 auto;
     height: calc(var(--default-width-20) * 3.5);
