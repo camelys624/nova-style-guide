@@ -5,6 +5,8 @@ date: "2022-05-03"
 author: "Robbie"
 ---
 
+答案后面再添加，昨天刚好看到一个文章写得还不错 [如何进行技术面试](https://jysperm.me/2022/05/technical-interview-tips)。
+
 ## Vue
 
 ** 1. v-bind 和 v-model 的区别，怎么自己实现一个 v-model 的组件 **
@@ -83,4 +85,62 @@ author: "Robbie"
 
 ** 7. 给定一个一维数组，组装为需要的树形结构数据 **
 
+数据结构如下：
+
+```js
+[
+  {id: 1, pId: null, label: 'menu1'},
+  {id: 2, pId: 1, label: 'menu2'},
+  {id: 3, pId: 1, label: 'menu3'},
+  {id: 4, pId: 2, label: 'menu4'},
+  {id: 5, pId: 2, label: 'menu5'},
+  {id: 6, pId: 2, label: 'menu6'},
+  {id: 7, pId: 3, label: 'menu7'},
+  {id: 8, pId: 3, label: 'menu8'},
+  {id: 9, pId: 7, label: 'menu9'},
+  {id: 10, pId: 7, label: 'menu10'}
+]
+```
+
+组装为如下的数据结构：
+
+```js
+{
+  id: 1,
+  pId: null,
+  label: 'menu1',
+  subList: [
+    {
+      id: 2,
+      pId: 1,
+      label: 'menu2',
+      subList: [   
+        {id: 4, pId: 2, label: 'menu4'},
+        {id: 5, pId: 2, label: 'menu5'},
+        {id: 6, pId: 2, label: 'menu6'},
+      ]
+    },
+    {
+      id: 3,
+      pId: 1,
+      label: 'menu3',
+      subList: [
+        {
+          id: 7,
+          pId: 3,
+          label: 'menu7',
+          subList: [  
+            {id: 9, pId: 7, label: 'menu9'},
+            {id: 10, pId: 7, label: 'menu10'}
+          ]
+        },
+        {id: 8, pId: 3, label: 'menu8'},
+      ]
+    }
+  ]
+}
+```
+
 ** 7.1 给定一个树形结构数据，转换为一维数组格式 **
+
+将上述树形结构转为以为数组，可以保留 subList 字段及其数据。

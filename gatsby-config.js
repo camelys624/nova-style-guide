@@ -2,7 +2,7 @@
 module.exports = {
   siteMetadata: {
     title: `Nova Style Guide`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `http://15.99.72.172:9999/`
   },
   plugins: ["gatsby-plugin-theme-ui", "gatsby-plugin-image", "gatsby-plugin-react-helmet", "gatsby-plugin-sitemap", {
     resolve: 'gatsby-plugin-manifest',
