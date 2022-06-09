@@ -41,13 +41,22 @@ window 的 git 自带 git flow，直接就能用，Linux 需要执行 `sudo apt-
 # 开发之前执行
 git flow feature start rss-feed
 
+# 也可以使用帮助命令了解详细的操作
+git flow feature help
+```
+
+执行上述命令之后，git flow 会创建一个名为`feature/rss-feed`的分支。
+
+### 完成一个功能
+
+经过一段时间艰苦的工作和一系列的聪明提交，我们的新功能纵欲完成了。执行下列命令完成功能：
+
+```bash
 # 完成功能后执行
 git flow feature finish rss-feed
 ```
 
-[!git flow feature]()
-
-开发完成之后，新的代码自动会合并到 develop 上，并且会删除掉新功能分支。
+开发完成之后，新的代码自动会合并到 develop 上，并且会删除掉新功能分支然后切换到 develop 分支上。
 
 如果说我在开发的时候，block 住了怎么办，我的建议是，执行完成命令，在 commit 里面详细记录做了什么事情，已经未做的事，等解除 block 状态再重新建一个 feature。
 
@@ -70,15 +79,94 @@ git flow bugfix start bug-24856
 git flow bugfix finish bu-24856
 ```
 
-### 发布
+### 创建 release
 
-在上线之前，我们可以执行下述命令，对代码做最后的修改。
+当你认为现在的`develop`分支的代码已经是一个成熟的 release 版本时，这意味着：第一，它包括所有新的功能和必要的修复；第二：它已经被彻底的测试过了。如果上述两点都满足，那就是时候开始生成一个新的 release 了：
 
 ```bash
 git flow release start 1.1.5
+```
 
+需要注意的是，release 分支是使用版本号命令的，这是一个明智的选择，这个命名方案还有一个很好的附带功能，那就是当我们完成 release 之后，git-flow 会适当的自动去标记那些 release 提交。
+
+有了一个 release 分支，再完成针对 release 版本号的最后准备工作(如果项目中的某些文件需要记录版本号)，并且进行最后的编辑。
+
+### 完成 release
+
+现在是时候按下那个危险的红色按钮来完成我们的 release 了：
+
+```bash
 git flow release finish 1.1.5
 ```
+
+这个命令会完成如下一系列的操作：
+
+1. 首先，git-flow 会拉取远程仓库，以确保目前是最新的版本
+2. 然后，release 的内容会被合并到`master`和`develop`两个分支中去，这样不仅产品代码为最新的版本，而且新的功能分支也将基于最新代码
+3. 为便于识别和做历史参考，release 提交会被标记上这个 release 的名字
+4. 清理操作，版本分支会被删除，并且回到`develop`
+
+### 回顾
+
+首先，git-flow 并不会为 Git 扩展任何新的功能，它仅仅使用了脚本来捆绑了一系列 Git 命令来完成一些特定的工作流程。
+
+其次，定义一个固定的工作流程会使得团队协作更加简单容易，无论是一个“版本控制的新手”还是"Git 专家"，每一个人都知道如何来正确地完成某个任务。
+
+使用 git-flow 并不是必须的，当积攒了一定的使用经验之后，很多团队会不再需要它了。当你能正确地理解工作流程的基本组成部分和目标的之后，我们完全可以定义一个属于自己的工作流程。
+
+## git 提交规范
+
+良好的提交信息可以提升项目的整体质量。
+
+- **格式统一的提交信息有助于自动化生成CHANGELOG**
+- **版本库不只是存放代码的仓库, 它记录项目的开发日志, 它应该要清晰表达这次提交的做了什么.** 这些记录应该可以帮助后来者快速地学习和回顾代码, 也应该方便其他协作者review你的代码
+- **规范化提交信息可以促进提交者提交有意义的、粒度合适的'提交'.** 提交者要想好要怎么描述这个提交，这样被动促进了他们去把控**提交的粒度**
+
+### 提交信息格式
+
+一般选择 [angular 的提交规范](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)。
+
+```text
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+#### header
+
+- type：说明commit的类型，可以配合emoji使用，让阅读者更快地区分提交的类型，允许以下类型：
+    - feature或feat：新功能
+    - fix：修复了bug
+    - docs：文档
+    - style：优化项目结构或代码格式
+    - refactor：代码重构
+    - test：增加测试
+    - chore：构建过程，辅助工具升级，如升级依赖，升级构建工具
+    - revert：revert之前的commit
+    - build或release：构建或发布版本
+
+- scope：可选，说明提交影响的范围，例如样式，后端接口，逻辑层等等
+- subject：提交目的的简单描诉，不超过80个字符，不要为了提交而提交
+
+#### body
+
+可选，对本次提交的详细描诉，如果变动很简单，可以省略。
+
+#### footer
+
+可选，只能用于说明不兼容变动和关闭 issue。
+
+可以直接看这个人的[描述](https://github.com/GDJiaMi/frontend-standards/blob/master/development.md#header)。
+
+推荐使用插件协助编写提交信息：
+
+- vscode
+    - [git-commit-plugin](https://marketplace.visualstudio.com/items?itemName=redjue.git-commit-plugin)，无他，中文而且带 emoji
+    - [Commit Message Editor](https://marketplace.visualstudio.com/items?itemName=adam-bender.commit-message-editor)
+- JetBrains 全家桶可以用 [Git Commit Template](https://plugins.jetbrains.com/plugin/9861-git-commit-template)
+
 
 ## 代码规范
 
@@ -87,6 +175,77 @@ git flow release finish 1.1.5
 VScode 可以使用 [ Prettier-Standard - JavaScript formatter](https://marketplace.visualstudio.com/items?itemName=numso.prettier-standard-vscode) 这个插件，或者直接使用 prettier，webstorm 则需要指定 perttier 文件。
 
 那么我们 code review 的时候 review 什么，我觉得 [airbnb](https://github.com/airbnb/javascript) 里面的就很好，主要是一些代码的实现，我们应当采取一些精简的，先进的方法来解决问题，相互学习。
+
+## 前端eslint与格式化配置
+
+### 配置 eslint
+
+推荐使用 vue-cli 脚手架安装 eslint，执行下列命令安装：
+
+```bash
+vue add eslint
+```
+
+然后选择 standard 作为规则，在项目根目录新建一个 `.eslintrc.js` 文件，在里面修改自定义规则，文件内容如下：
+
+```js
+module.exports = {
+  root: true,
+  env: {
+    node: true
+  },
+  extends: ['plugin:vue/base', 'plugin:vue/recommended', '@vue/standard'],
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    semi: ['error', 'never'],
+    'vue/max-attributes-per-line': [
+      'error',
+      {
+        singleline: {
+          max: 3
+        },
+        multiline: {
+          max: 1
+        }
+      }
+    ],
+    "space-before-function-paren": ['error', 'never']
+  }
+}
+```
+
+详细的rule可以去[官网](https://eslint.org/docs/rules/)查看
+
+### 配置 prettier 格式化文档
+
+使用 prettier 来代码格式化，可以统一代码风格。执行下列命令安装 prettier：
+
+```bash
+yarn add prettier
+```
+
+在项目根目录创建一个`.prettierrc.js`文件，里面内容如下：
+
+```js
+module.exports = {
+  semi: false,
+  singleQuote: true,
+  bracketSpacing: true,
+  trailingComma: 'none'
+}
+```
+
+这里面都是一些格式化的规则，可以去[官网](https://prettier.io/docs/en/options.html)根据需要自行添加。
+
+- 在 vscode 中使用
+    需要安装相关插件，vue 可以安装 vetur 插件来设置格式化规则；也可以安装 prettier 插件，然后格式化的时候选择 prettier。
+- 在 webstorm 中使用
+    在 File | Settings | Languages & Frameworks | Prettier 中选择 prettier 包，再在 run to file 中添加上 vue 就 ok。
 
 ## 前端与UI协作
 
