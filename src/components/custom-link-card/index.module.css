@@ -2,7 +2,7 @@
     padding: 0 var(--default-width-20);
     background-color: var(--background-color);
     border: solid var(--default-width-1) #e3e3e3;
-    margin: 0 calc(var(--default-width-20) / 2);
+    margin: 0 calc(var(--default-width-20) / 2) var(--default-width-20);
     color: var(--default-color);
     text-decoration: none;
 }
