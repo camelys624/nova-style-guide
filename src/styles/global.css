@@ -35,4 +35,8 @@ img {
   font-family: "Fira Code";
 }
 
-@import "~highlight.js/styles/base16/dracula.css";
+pre code.hljs {
+  background-color: #f6f8fa;
+}
+
+@import "~highlight.js/styles/base16/github.css";
